@@ -20,6 +20,7 @@ class Create extends Component
 
 
     ];
+
     public function render()
     {
         return view('livewire.produtos.create');
@@ -40,6 +41,7 @@ class Create extends Component
             'price' =>$this->price,
             'description' =>$this->description
         ]);
+        
         $this->notification()->notify([
             'title'       => 'Sucesso!',
             'description' => 'Seu Produto foi salvo com sucesso',

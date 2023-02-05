@@ -1,0 +1,1 @@
+import { ProdutoControladora } from "./produto-controladora.js";

@@ -1,7 +1,5 @@
 <div>
     <form wire:submit.prevent="save">
-
-
         <x-card title="Cadastro de produtos">
 
             <x-input wire:model.lazy="name" label="Produto:" placeholder="Nome do produto" name="produto" />
@@ -27,10 +25,5 @@
             </x-slot>
 
         </x-card>
-
-
-
-
-
     </form>
 </div>

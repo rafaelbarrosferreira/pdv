@@ -16,7 +16,7 @@ module.exports = {
     },
     presets: [
 
-            require('./vendor/wireui/wireui/tailwind.config.js')
+        require('./vendor/wireui/wireui/tailwind.config.js')
     ],
     purge: {
         content: [

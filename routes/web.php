@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\ProdutoController;
+use App\Http\Controllers\VendaController;
 use App\Http\Livewire\Auth\Login;
 use App\Http\Livewire\Auth\Passwords\Confirm;
 use App\Http\Livewire\Auth\Passwords\Email;
@@ -10,9 +12,7 @@ use App\Http\Livewire\Auth\Register;
 use App\Http\Livewire\Auth\Verify;
 use App\Http\Livewire\{
     Indicador\Indicador,
-    Playground
-
-
+    Playground,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -39,14 +39,15 @@ Route::middleware('guest')->group(function () {
         ->name('register');
 });
 
+
 Route::get('password/reset', Email::class)
     ->name('password.request');
 
 Route::get('password/reset/{token}', Reset::class)
     ->name('password.reset');
 
-Route::middleware('auth')->group(function () {
 
+Route::middleware('auth')->group(function () {
 
     Route::get('email/verify', Verify::class)
         ->middleware('throttle:6,1')
@@ -71,5 +72,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/indicador', Indicador::class)->name('indicador');
 
     Route::get('/playground', Playground::class)->name('playground');
+    Route::resource('/venda', VendaController::class);
+    Route::get('/vender', [VendaController::class, 'create'])->name('vender');
+    Route::get('/produto/{nome}/comNome', [ProdutoController::class, 'comNome']);
+    Route::resource('/produto', VendaController::class);
 });
-

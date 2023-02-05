@@ -1,4 +1,19 @@
 {
     "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css"
+    "/js/lib/app.js": "/js/lib/app.js",
+    "/css/app.css": "/css/app.css",
+    "/js/produtos/produto-error.js": "/js/produtos/produto-error.js",
+    "/js/produtos/produto.js": "/js/produtos/produto.js",
+    "/js/produtos/produto-repositorio.js": "/js/produtos/produto-repositorio.js",
+    "/js/produtos/produto-servico.js": "/js/produtos/produto-servico.js",
+    "/js/produtos/produto-visao.js": "/js/produtos/produto-visao.js",
+    "/js/produtos/produto-controladora.js": "/js/produtos/produto-controladora.js",
+    "/js/produtos/index.js": "/js/produtos/index.js",
+    "/js/vendas/venda.js": "/js/vendas/venda.js",
+    "/js/vendas/venda-error.js": "/js/vendas/venda-error.js",
+    "/js/vendas/venda-repositorio.js": "/js/vendas/venda-repositorio.js",
+    "/js/vendas/venda-servico.js": "/js/vendas/venda-servico.js",
+    "/js/vendas/venda-visao.js": "/js/vendas/venda-visao.js",
+    "/js/vendas/venda-controladora.js": "/js/vendas/venda-controladora.js",
+    "/js/vendas/index.js": "/js/vendas/index.js"
 }

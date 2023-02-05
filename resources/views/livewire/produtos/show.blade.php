@@ -1,5 +1,4 @@
 <div>
-
     <x-card title="Lista de produtos">
         <x-input  class="border-info-800" wire:model.defer="search" label="Pesquisar produto:" placeholder="Click na lupa para pesquisar 🧐 ">
             <x-slot name="append">
