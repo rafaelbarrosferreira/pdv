@@ -13,6 +13,6 @@ class Produto extends Model
 
     
     public function venda(){
-        return $this->belongsToMany(Venda::class);
+        return $this->belongsToMany(Venda::class, 'itens_vendas', 'venda_id', 'produto_id')->withPivot('quantidade');
     }
 }

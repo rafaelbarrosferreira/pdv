@@ -13,10 +13,11 @@ class Indicador extends Component
     public int $totalProduto;
     public string $produtoMaisCaro;
     public string $tickedMedio;
-    public $startDate;
-    public $endDate;
 
     public array $vendasPorDia;
+    public array $produtosMaisVendidos;
+    public string $produtoMaisVendido;
+    public string $produtoMenosVendido;
 
     protected $listeners = [
         'Produto::create' => '$refresh',
@@ -27,30 +28,50 @@ class Indicador extends Component
     public function mount()
     {
 
-        $faturamentoPeriodo = DB::table('vendas')->select(DB::raw('SUM(total) as fat'))->whereBetween('created_at',[Carbon::parse($this->startDate)->hour(0)->minute(0)->toDateTimeString(),Carbon::parse($this->endDate)->toDateTimeString()])->first();
+        $faturamentoPeriodo = DB::table('vendas')
+            ->select(DB::raw('SUM(total) as total_sales'))
+            ->first();
 
-        $qtdVendasPeriodo = Venda::whereBetween('created_at',[Carbon::parse($this->startDate)->hour(0)->minute(0)->toDateTimeString(),Carbon::parse($this->endDate)->toDateTimeString()])->count();
-        $currentDate = Carbon::now()->toDateString();
-        $currentDate = Carbon::now()->toDateString();
+        $qtdVendasPeriodo = Venda::count();
+        $groupedSales = Venda::select('data_venda')
+            ->groupBy('data_venda')
+            ->get();
 
+        $vendasDia = $groupedSales;
 
-        $this->vendasPorDia =  Venda::selectRaw('count(distinct created_at) as count, created_at as data')
-        ->whereBetween('created_at', [
-            Carbon::parse($this->startDate)->startOfDay()->toDateTimeString(),
-            Carbon::parse($this->endDate)->toDateTimeString()
-        ])
-        ->groupBy('created_at')
-        ->get()->toArray();
-        
-        $this->tickedMedio =($qtdVendasPeriodo) ? $faturamentoPeriodo->fat/ $qtdVendasPeriodo : 0;
+        foreach ($vendasDia as $venda) {
+            $date = Carbon::parse($venda->data_atual);
+
+            if (!isset($this->vendasPorDia[$date->toDateString()])) {
+                $this->vendasPorDia[$date->toDateString()] = 0;
+            }
+
+            $this->vendasPorDia[$date->toDateString()] += 1;
+        }
+        $maisVendidos = Produto::select('produtos.name', DB::raw('SUM(itens_vendas.quantidade) as total_vendido'))
+            ->distinct()
+            ->join('itens_vendas', 'produtos.id', '=', 'itens_vendas.produto_id')
+            ->groupBy('produtos.name')
+            ->orderBy('total_vendido', 'desc')
+            ->get();
+
+        foreach ($maisVendidos as $maisVendido) {
+            $this->produtosMaisVendidos[$maisVendido->name] = $maisVendido->total_vendido;
+        }
+       
+        $this->produtoMaisVendido = $maisVendido->first()->name;
+        $this->produtoMenosVendido = Produto::select('produtos.name', DB::raw('SUM(itens_vendas.quantidade) as total_vendido'))
+            ->distinct()
+            ->join('itens_vendas', 'produtos.id', '=', 'itens_vendas.produto_id')
+            ->groupBy('produtos.name')
+            ->orderBy('total_vendido', 'asc')
+            ->first()->name;
+        $this->tickedMedio = ($qtdVendasPeriodo) ? $faturamentoPeriodo->total_sales / $qtdVendasPeriodo : 0;
 
         $this->totalProduto = Produto::count();
 
-        !$this->totalProduto ? : $this->produtoMaisCaro = Produto::select('name','price')
-                                                        ->orderBy('price','desc')->first();
-
-  
-
+        !$this->totalProduto ?: $this->produtoMaisCaro = Produto::select('name', 'price')
+            ->orderBy('price', 'desc')->first();
     }
 
 
@@ -59,4 +80,3 @@ class Indicador extends Component
         return view('livewire.indicador.indicador');
     }
 }
-

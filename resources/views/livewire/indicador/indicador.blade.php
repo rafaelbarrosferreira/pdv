@@ -1,17 +1,12 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const myChart = new Chart(document.getElementById('myChart'), {
-            type: 'line',
+        const vendasPorDia = new Chart(document.getElementById('vendasPorDia'), {
+            type: 'bar',
             data: {
-                labels: [
-                    'Aprovações Diretas',
-                    'Aprovações   por   Avaliação   Final',
-                    'Reprovações   por   Nota',
-                    'Reprovações por Falta'
-                ],
+                labels: <?php echo json_encode(array_keys($vendasPorDia)); ?>,
                 datasets: [{
-                    label: 'My First Dataset',
-                    data: [65, 59, 80, 81, 56, 55, 40],
+                    label: 'Vendas Por dia',
+                    data: <?php echo json_encode(array_values($vendasPorDia)); ?>,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(255, 159, 64, 0.2)',
@@ -34,14 +29,36 @@
                 }]
             },
             options: {
-                onClick: (e) => {
-                    const canvasPosition = getRelativePosition(e, chart);
-
-                    // Substitute the appropriate scale IDs
-                    const dataX = chart.scales.x.getValueForPixel(canvasPosition.x);
-                    const dataY = chart.scales.y.getValueForPixel(canvasPosition.y);
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
                 }
-            }
+            },
+        });
+
+        const vendasPorProduto = new Chart(document.getElementById('vendasPorProduto'), {
+            type: 'doughnut',
+            data: {
+                labels: <?php echo json_encode(array_keys($produtosMaisVendidos)); ?>,
+                datasets: [{
+                    label: 'Vendas por produto',
+                    data: <?php echo json_encode(array_values($produtosMaisVendidos)); ?>,
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 205, 86)'
+                    ],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            },
         });
 
     })
@@ -63,15 +80,6 @@
 <div class="my-2">
 
     <x-card class="border-info-800 my-2  " title="Indicadores">
-
-        <div class="my-4 flex justify-between">
-            <label for="start-date" class="text-sm font-medium">Data Inicial:</label>
-            <input type="date" id="start-date" value="{{\Carbon\Carbon::now()->toDateString()}}" x-model="startDate" class="border px-2 py-1 rounded-md">
-
-            <label for="end-date" class="text-sm font-medium">Data Final:</label>
-            <input type="date" id="end-date" x-model="endDate" value="{{\Carbon\Carbon::now()->addDays(30)->toDateString()}}" class="border px-2 py-1 rounded-md">
-        </div>
-
         <div x-data="{ startDate: '', endDate: '' }">
             <div wire:loading.class="hidden" class="text-center grid grid-cols-2 gap-2">
 
@@ -87,20 +95,41 @@
                     <p class="font-bold-500 text-xl">{{ $produtoMaisCaro ? json_decode($produtoMaisCaro)->name.' R$ '.json_decode($produtoMaisCaro)->price : 'Não existe produto'}} </p>
                     <p class="">Produto Mais Caro</p>
                 </div>
-                
+
                 <div class=" bg-white p-3 border shadow-md shadow-red rounded-md">
 
                     <p class="font-bold-500 text-xl">{{ $tickedMedio > 0 ? number_format($tickedMedio,3): 0.00}} </p>
                     <p class="">Ticked Médio</p>
                 </div>
+                
+                <div class=" bg-white p-3 border shadow-md shadow-red rounded-md">
+
+                    <p class="font-bold-500 text-xl">{{ $produtoMaisVendido ? $produtoMaisVendido: ''}} </p>
+                    <p class="">Produto Mais vendido</p>
+                </div>
+ 
+                <div class=" bg-white p-3 border shadow-md shadow-red rounded-md">
+
+                    <p class="font-bold-500 text-xl">{{ $produtoMenosVendido ? $produtoMenosVendido : ''}} </p>
+                    <p class="">Produto menos vendido</p>
+                </div>
             </div>
         </div>
 
 
+        <div class=" bg-white p-3 border shadow-md shadow-red rounded-md">
+            <div class="my-2">
+                <canvas style="height: 300px; width: 100%;" id="vendasPorProduto"></canvas>
+
+            </div>
+        </div>]
+
+        <div class=" bg-white p-3 border shadow-md shadow-red rounded-md">
+
+            <div class="my-2">
+                <canvas style="height: 100px; width: 20%;" id="vendasPorDia"></canvas>
+
+            </div>
+        </div>
     </x-card>
-</div>
-
-<div class="my-2">
-    <canvas id="myChart"></canvas>
-
 </div>
