@@ -3,7 +3,6 @@
 @section('content')
 <script src="{{url(mix('js/vendas/index.js'))}}" type="module" defer="true"></script>
 
-
 <x-card title="Vendas Realizadas">
    <div class="flex items-center justify-center">
       <button type="button" id="vender" name="vender" class="bg-green-500 text-white py-2 px-4 rounded mb-5">VENDER</button>

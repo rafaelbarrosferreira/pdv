@@ -3,10 +3,10 @@
         const vendasPorDia = new Chart(document.getElementById('vendasPorDia'), {
             type: 'bar',
             data: {
-                labels: <?php echo json_encode(array_keys($vendasPorDia)); ?>,
+                labels: <?php if($vendasPorDia) echo json_encode(array_keys($vendasPorDia)); else echo json_encode([]); ?>,
                 datasets: [{
                     label: 'Vendas Por dia',
-                    data: <?php echo json_encode(array_values($vendasPorDia)); ?>,
+                    data: <?php  if($vendasPorDia) echo json_encode(array_values($vendasPorDia)); else echo json_encode([]); ?>,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(255, 159, 64, 0.2)',
@@ -40,10 +40,10 @@
         const vendasPorProduto = new Chart(document.getElementById('vendasPorProduto'), {
             type: 'doughnut',
             data: {
-                labels: <?php echo json_encode(array_keys($produtosMaisVendidos)); ?>,
+                labels: <?php if($produtosMaisVendidos) echo json_encode(array_keys($produtosMaisVendidos)); else echo json_encode([]);?>,
                 datasets: [{
                     label: 'Vendas por produto',
-                    data: <?php echo json_encode(array_values($produtosMaisVendidos)); ?>,
+                    data: <?php if($produtosMaisVendidos) echo json_encode(array_values($produtosMaisVendidos)); else echo json_encode([]); ?>,
                     backgroundColor: [
                         'rgb(255, 99, 132)',
                         'rgb(54, 162, 235)',

@@ -910,10 +910,6 @@ select:invalid {
 	margin-top: 0.5rem;
 	margin-bottom: 0.5rem;
 }
-.my-4 {
-	margin-top: 1rem;
-	margin-bottom: 1rem;
-}
 .my-auto {
 	margin-top: auto;
 	margin-bottom: auto;
@@ -1645,13 +1641,13 @@ select:invalid {
 	padding-top: 0.75rem;
 	padding-bottom: 0.75rem;
 }
-.px-2 {
-	padding-left: 0.5rem;
-	padding-right: 0.5rem;
-}
 .py-1 {
 	padding-top: 0.25rem;
 	padding-bottom: 0.25rem;
+}
+.px-2 {
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
 }
 .py-2\.5 {
 	padding-top: 0.625rem;

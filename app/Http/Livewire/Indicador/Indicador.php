@@ -24,7 +24,6 @@ class Indicador extends Component
         'Produto::delete' => '$refresh'
     ];
 
-
     public function mount()
     {
 
@@ -48,32 +47,39 @@ class Indicador extends Component
 
             $this->vendasPorDia[$date->toDateString()] += 1;
         }
+
         $maisVendidos = Produto::select('produtos.name', DB::raw('SUM(itens_vendas.quantidade) as total_vendido'))
             ->distinct()
             ->join('itens_vendas', 'produtos.id', '=', 'itens_vendas.produto_id')
             ->groupBy('produtos.name')
             ->orderBy('total_vendido', 'desc')
             ->get();
-
-        foreach ($maisVendidos as $maisVendido) {
-            $this->produtosMaisVendidos[$maisVendido->name] = $maisVendido->total_vendido;
+        if(isset($maisVendido)){
+            foreach ($maisVendidos as $maisVendido) {
+                $this->produtosMaisVendidos[$maisVendido->name] = $maisVendido->total_vendido;
+            }
         }
        
-        $this->produtoMaisVendido = $maisVendido->first()->name;
-        $this->produtoMenosVendido = Produto::select('produtos.name', DB::raw('SUM(itens_vendas.quantidade) as total_vendido'))
+        if(isset($maisVendido) && $maisVendido instanceof Venda) $this->produtoMaisVendido = $maisVendido->first()->name;
+        
+        if( Produto::select('produtos.name', DB::raw('SUM(itens_vendas.quantidade) as total_vendido'))
+        ->distinct()
+        ->join('itens_vendas', 'produtos.id', '=', 'itens_vendas.produto_id')
+        ->groupBy('produtos.name')
+        ->orderBy('total_vendido', 'asc')
+        ->first())$this->produtoMenosVendido = Produto::select('produtos.name', DB::raw('SUM(itens_vendas.quantidade) as total_vendido'))
             ->distinct()
             ->join('itens_vendas', 'produtos.id', '=', 'itens_vendas.produto_id')
             ->groupBy('produtos.name')
             ->orderBy('total_vendido', 'asc')
             ->first()->name;
-        $this->tickedMedio = ($qtdVendasPeriodo) ? $faturamentoPeriodo->total_sales / $qtdVendasPeriodo : 0;
+       if($faturamentoPeriodo) $this->tickedMedio = ($qtdVendasPeriodo) ? $faturamentoPeriodo->total_sales / $qtdVendasPeriodo : 0;
 
         $this->totalProduto = Produto::count();
 
         !$this->totalProduto ?: $this->produtoMaisCaro = Produto::select('name', 'price')
             ->orderBy('price', 'desc')->first();
     }
-
 
     public function render()
     {
