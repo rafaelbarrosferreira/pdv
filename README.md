@@ -1,23 +1,11 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://www.bex-data.com/wp-content/uploads/2021/04/bex-branco-300.png" width="400"></a></p>
-<p align="center">Ressignificando os dados do mundo para o mundo.</p>
+Sobre o pdv Este sistema foi desenvolvido sob encomenda da bex.
 
+Documentação do laravel.
 
-## Bex Teste | Laravel
+Requisitos PHP 7.4 Node v16.14.0 npm 8.5.2 composer 2.2.7
 
-Fala Dev!
-<p>Aqui vai umas dicas para iniciar o teste</p>
+Colocando o projeto para rodar
 
-- Conferir a versão do php, o teste esta na Versão "^7.4|^8.0".
-- Fazer o clone do repositório.
-- Rodar os comandos abaixo:
-  ```bash
-    cd bex-teste
-    composer install && npm i  
-   
-  ```
-- Configure o .env e depois rode as migrations.
-   ```bash
-        php artisan migrate
-         npm run watch
-    ```
-Se deu tudo certo até aqui, agora é com você, vai encontrar mais detalhes no projeto, faz rodar e divirta-se 😁.
+crie o arquivo .env com as configurações do projeto (existe um .env.example q pode ser usado como base) configure o acesso ao banco (database, user e password) no .env rode o comando php artisan key:generate
+
+rode o comando php artisan migrate para criar o banco rode o comando php artisan serve para rodar o projeto locamente
